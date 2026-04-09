@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temu A2W2A — Re-evaluation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --surface-2: #F2EFE9;
+    --border: #E0DBD0;
+    --border-strong: #C8C2B4;
+    --text-primary: #1A1714;
+    --text-secondary: #6B6458;
+    --text-muted: #9E9689;
+    --accent-blue: #1A4F8A;
+    --accent-blue-bg: #EBF2FA;
+    --accent-blue-border: #B8D0EC;
+    --accent-purple: #4A2F8C;
+    --accent-purple-bg: #F0EDFB;
+    --accent-purple-border: #C8BBF0;
+    --accent-green: #1F6645;
+    --accent-green-bg: #EAF4EE;
+    --accent-green-border: #A8D8BC;
+    --accent-amber: #7A4A0A;
+    --accent-amber-bg: #FDF3E3;
+    --accent-amber-border: #F0CF98;
+    --accent-red: #8A2020;
+    --accent-red-bg: #FAEAEA;
+    --accent-red-border: #E8AAAA;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Fraunces', serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text-primary); font-size: 15px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+  .topbar { background: var(--text-primary); color: #F7F5F0; padding: 0.6rem 2rem; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between; }
+  .topbar-left { display: flex; align-items: center; gap: 1rem; }
+  .topbar-dot { width: 6px; height: 6px; background: #F7F5F0; border-radius: 50%; opacity: 0.4; }
+  .topbar-date { opacity: 0.5; }
+
+  .hero { padding: 3rem 2rem 2.5rem; max-width: 1000px; margin: 0 auto; border-bottom: 1px solid var(--border); }
+  .hero-label { font-family: var(--mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 8px; }
+  .hero-label::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--text-muted); }
+  .hero-sub { font-size: 14px; color: var(--text-secondary); display: flex; flex-wrap: wrap; gap: 1.5rem; }
+  .hero-meta { display: flex; align-items: center; gap: 6px; }
+  .hero-meta-icon { width: 4px; height: 4px; background: var(--text-muted); border-radius: 50%; }
+
+  .container { max-width: 1000px; margin: 0 auto; padding: 3rem 2rem; }
+
+  .section { margin-bottom: 3.5rem; }
+  .section-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.5rem; }
+  .section-num { font-family: var(--mono); font-size: 11px; color: var(--text-muted); min-width: 24px; }
+  .section-title { font-family: var(--serif); font-size: 1.4rem; font-weight: 300; color: var(--text-primary); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; flex: 1; }
+  .section-title .zh { font-size: 0.9rem; color: var(--text-muted); font-family: var(--sans); font-weight: 300; margin-left: 0.5rem; }
+
+  .verdict-card { border: 1px solid var(--border-strong); border-radius: 12px; overflow: hidden; background: var(--surface); }
+  .verdict-card-header { background: var(--text-primary); padding: 1rem 1.5rem; display: flex; align-items: center; gap: 10px; }
+  .verdict-card-header p { font-size: 13px; font-weight: 500; color: #F7F5F0; letter-spacing: 0.02em; }
+  .verdict-dot { width: 8px; height: 8px; border-radius: 50%; background: #6EE7B7; flex-shrink: 0; }
+  .verdict-body { display: grid; grid-template-columns: 1fr 1fr; }
+  .verdict-col { padding: 1.5rem; }
+  .verdict-col:first-child { border-right: 1px solid var(--border); }
+  .verdict-col p { font-size: 14px; line-height: 1.75; color: var(--text-primary); }
+  .lang-badge { display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 4px; margin-bottom: 0.75rem; letter-spacing: 0.05em; }
+  .badge-en { background: var(--accent-blue-bg); color: var(--accent-blue); border: 1px solid var(--accent-blue-border); }
+  .badge-zh { background: var(--accent-purple-bg); color: var(--accent-purple); border: 1px solid var(--accent-purple-border); }
+
+  .dual { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .dual-col { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem 1.5rem; }
+  .dual-col p { font-size: 14px; line-height: 1.75; color: var(--text-primary); margin-bottom: 0.75rem; }
+  .dual-col p:last-child { margin-bottom: 0; }
+  .dual-col ul { padding-left: 1.1rem; margin-top: 0.5rem; }
+  .dual-col li { font-size: 14px; line-height: 1.75; color: var(--text-primary); margin-bottom: 5px; }
+  hr.divider { border: none; border-top: 1px solid var(--border); margin: 0.6rem 0 1rem; }
+
+  .conv-list { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .conv-item { display: flex; border-bottom: 1px solid var(--border); }
+  .conv-item:last-child { border-bottom: none; }
+  .conv-accent { width: 4px; flex-shrink: 0; }
+  .conv-body { padding: 1.15rem 1.25rem; flex: 1; }
+  .conv-tag { font-family: var(--mono); font-size: 10px; color: var(--text-muted); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 7px; display: flex; align-items: center; gap: 6px; }
+  .conv-tag .dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+  .conv-body p { font-size: 14px; line-height: 1.8; color: var(--text-primary); }
+  .conv-body .sub { font-size: 13px; color: var(--text-secondary); margin-top: 5px; }
+  .conv-body .quote { margin-top: 0.75rem; padding: 0.7rem 1rem; background: var(--surface-2); border-left: 3px solid var(--border-strong); border-radius: 0 6px 6px 0; font-size: 13px; color: var(--text-secondary); line-height: 1.7; font-style: italic; }
+
+  .new-request-card { border: 1px solid var(--accent-amber-border); border-radius: 12px; overflow: hidden; background: var(--surface); }
+  .new-request-header { background: var(--accent-amber-bg); padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--accent-amber-border); }
+  .new-request-header p { font-size: 11px; font-weight: 500; color: var(--accent-amber); font-family: var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
+  .option-grid { display: grid; grid-template-columns: 1fr 1fr; }
+  .option-col { padding: 1.25rem 1.5rem; }
+  .option-col:first-child { border-right: 1px solid var(--border); }
+  .option-label { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 7px; }
+  .option-num { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; }
+  .option-col p { font-size: 14px; line-height: 1.75; color: var(--text-primary); }
+  .option-col .sub-en { font-size: 13px; color: var(--text-secondary); margin-top: 0.6rem; }
+
+  .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: var(--surface-2); }
+  th { text-align: left; font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  td { padding: 11px 14px; font-size: 13.5px; color: var(--text-primary); line-height: 1.55; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td .zh-sub { display: block; font-size: 12px; color: var(--text-muted); margin-top: 3px; line-height: 1.5; }
+  td code, li code, p code { font-family: var(--mono); font-size: 12px; background: var(--surface-2); border: 1px solid var(--border); padding: 1px 5px; border-radius: 4px; color: var(--accent-blue); }
+
+  .pill { display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 20px; letter-spacing: 0.04em; white-space: nowrap; }
+  .pill-green { background: var(--accent-green-bg); color: var(--accent-green); border: 1px solid var(--accent-green-border); }
+  .pill-amber { background: var(--accent-amber-bg); color: var(--accent-amber); border: 1px solid var(--accent-amber-border); }
+  .pill-blue { background: var(--accent-blue-bg); color: var(--accent-blue); border: 1px solid var(--accent-blue-border); }
+  .pill-red { background: var(--accent-red-bg); color: var(--accent-red); border: 1px solid var(--accent-red-border); }
+  .pill-purple { background: var(--accent-purple-bg); color: var(--accent-purple); border: 1px solid var(--accent-purple-border); }
+
+  .reviewers { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+  .reviewer-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; display: flex; align-items: center; gap: 10px; flex: 1; min-width: 185px; }
+  .reviewer-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text-secondary); flex-shrink: 0; }
+  .reviewer-name { font-size: 13px; font-weight: 500; }
+  .reviewer-team { font-size: 11px; color: var(--text-muted); font-family: var(--mono); }
+  .reviewer-status { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 20px; background: var(--accent-green-bg); color: var(--accent-green); border: 1px solid var(--accent-green-border); margin-top: 3px; font-family: var(--mono); letter-spacing: 0.04em; }
+
+  .steps { display: flex; flex-direction: column; }
+  .step-item { display: flex; gap: 1rem; position: relative; }
+  .step-item:not(:last-child)::before { content: ''; position: absolute; left: 15px; top: 32px; bottom: 0; width: 1px; background: var(--border); }
+  .step-num { width: 30px; height: 30px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text-muted); flex-shrink: 0; margin-top: 2px; z-index: 1; }
+  .step-content { padding: 0 0 1.5rem; flex: 1; }
+  .step-content p { font-size: 14px; line-height: 1.7; color: var(--text-primary); }
+
+  footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; font-size: 12px; color: var(--text-muted); font-family: var(--mono); letter-spacing: 0.04em; max-width: 1000px; margin: 0 auto; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  .hero { animation: fadeUp 0.5s ease both; }
+  .section { animation: fadeUp 0.45s ease both; }
+  .section:nth-child(1) { animation-delay: 0.05s; }
+  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(3) { animation-delay: 0.15s; }
+  .section:nth-child(4) { animation-delay: 0.2s; }
+  .section:nth-child(5) { animation-delay: 0.25s; }
+  .section:nth-child(6) { animation-delay: 0.3s; }
+
+  @media (max-width: 640px) {
+    .hero, .container { padding: 2rem 1.25rem; }
+    .dual, .verdict-body, .option-grid { grid-template-columns: 1fr; }
+    .verdict-col:first-child, .option-col:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+    .topbar { font-size: 10px; padding: 0.5rem 1rem; }
+    th { font-size: 10px; }
+    td { font-size: 12px; padding: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span>Temu A2W2A</span>
+    <div class="topbar-dot"></div>
+    <span>Install Postback · Re-evaluation</span>
+  </div>
+  <span class="topbar-date">April 9, 2026</span>
+</div>
+
+<div class="hero">
+  <div class="hero-label">A2W2A · Install Postback · Re-evaluation</div>
+</div>
+
+<div class="container">
+
+  <!-- 01 TERMINOLOGY -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">术语差异 <span class="zh">/ Terminology Gap — Root Cause of Confusion</span></h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Term / 术语</th>
+            <th><span class="pill pill-blue">EN</span> Liftoff meaning</th>
+            <th><span class="pill pill-purple">中</span> Liftoff侧含义</th>
+            <th><span class="pill pill-blue">EN</span> Temu meaning</th>
+            <th><span class="pill pill-purple">中</span> Temu侧含义</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>install</code></td>
+            <td>First app open → enters ML pipeline</td>
+            <td>用户首次打开App，进入ML训练管道</td>
+            <td>MMP (Adjust) attributed install</td>
+            <td>MMP（Adjust）归因的激活</td>
+          </tr>
+          <tr>
+            <td><code>actv</code></td>
+            <td>Temu S2S activation postback</td>
+            <td>Temu S2S回传的激活事件</td>
+            <td>Temu's own precise install signal via S2S</td>
+            <td>Temu定义的"更精准安装"，走S2S链路</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 02 CONV KEY POINTS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">对话要点 <span class="zh">/ Conversation Key Points (from pasted thread)</span></h2>
+    </div>
+    <div class="conv-list">
+
+      <div class="conv-item">
+        <div class="conv-accent" style="background:#1A4F8A;"></div>
+        <div class="conv-body">
+          <div class="conv-tag"><div class="dot" style="background:#1A4F8A;"></div>背景确认 · Background confirmed &nbsp;—&nbsp; <span style="color:var(--accent-purple);font-weight:500;">Temu（Yifan）</span></div>
+          <p><strong style="font-weight:500;">Temu（Yifan）</strong>确认：CPA模型目前<strong style="font-weight:500;">少学习约25%的激活样本</strong>。原因是A2W2A流量没有配置MMP点击链路，Adjust无法对这部分流量归因，导致 <code>actv</code> 信号无法进入模型训练。Temu内部真实转化率与模型转化率的差距约为25%。</p>
+          <p class="sub">Temu (Yifan) confirmed: the CPA model is under-learning ~25% of activation signals because A2W2A traffic has no MMP click link configured → Adjust cannot attribute it → <code>actv</code> is excluded from training.</p>
+
+          <!-- VENN DIAGRAM -->
+          <div style="margin-top:1.25rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:1.1rem;">Install signal coverage — 三类信号分布</div>
+
+            <!-- SVG Venn -->
+            <svg viewBox="0 0 420 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;display:block;margin:0 auto 1rem;">
+              <!-- actv circle -->
+              <ellipse cx="155" cy="65" rx="120" ry="52" fill="rgba(74,47,140,0.08)" stroke="#4A2F8C" stroke-width="1.5"/>
+              <!-- MMP circle -->
+              <ellipse cx="265" cy="65" rx="120" ry="52" fill="rgba(26,79,138,0.08)" stroke="#1A4F8A" stroke-width="1.5"/>
+              <!-- overlap fill -->
+              <ellipse cx="155" cy="65" rx="120" ry="52" fill="rgba(74,47,140,0.06)" stroke="none"/>
+              <!-- Labels -->
+              <text x="88" y="60" font-family="monospace" font-size="11" font-weight="600" fill="#4A2F8C" text-anchor="middle">actv</text>
+              <text x="88" y="74" font-family="monospace" font-size="11" font-weight="600" fill="#4A2F8C" text-anchor="middle">only</text>
+              <text x="210" y="58" font-family="monospace" font-size="10" fill="#666" text-anchor="middle">MMP</text>
+              <text x="210" y="71" font-family="monospace" font-size="10" fill="#666" text-anchor="middle">+</text>
+              <text x="210" y="84" font-family="monospace" font-size="10" fill="#666" text-anchor="middle">actv</text>
+              <text x="332" y="57" font-family="monospace" font-size="10" font-weight="600" fill="#1A4F8A" text-anchor="middle">MMP</text>
+              <text x="332" y="70" font-family="monospace" font-size="10" font-weight="600" fill="#1A4F8A" text-anchor="middle">install</text>
+              <text x="332" y="83" font-family="monospace" font-size="10" font-weight="600" fill="#1A4F8A" text-anchor="middle">only</text>
+              <!-- Arrow pointing to MMP install only with label -->
+              <line x1="332" y1="97" x2="332" y2="112" stroke="#E24B4A" stroke-width="1.5" marker-end="url(#arr)"/>
+              <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#E24B4A"/></marker></defs>
+              <text x="332" y="124" font-family="monospace" font-size="9" fill="#E24B4A" text-anchor="middle">← 25% gap (Jing's hypothesis)</text>
+            </svg>
+
+            <!-- Legend -->
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.55;">
+                <div style="width:11px;height:11px;border-radius:50%;background:rgba(74,47,140,0.12);border:1.5px solid #4A2F8C;flex-shrink:0;margin-top:2px;"></div>
+                <span><strong style="font-weight:500;color:#4A2F8C;">actv only</strong> — Temu S2S激活，无Adjust归因。Liftoff已能收到，但未被识别为install进入ML。</span>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.55;">
+                <div style="width:11px;height:11px;border-radius:50%;background:rgba(100,100,140,0.12);border:1.5px solid #888;flex-shrink:0;margin-top:2px;"></div>
+                <span><strong style="font-weight:500;color:#555;">MMP + actv overlap</strong> — 同时有Adjust归因和Temu S2S激活的用户，去重逻辑已覆盖。</span>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.55;">
+                <div style="width:11px;height:11px;border-radius:50%;background:rgba(26,79,138,0.12);border:1.5px solid #1A4F8A;flex-shrink:0;margin-top:2px;"></div>
+                <span><strong style="font-weight:500;color:#1A4F8A;">MMP install only</strong> — 只有Adjust归因、没有S2S actv的用户。</span>
+              </div>
+            </div>
+
+            <!-- Jing's hypothesis note -->
+            <div style="margin-top:1rem;padding:0.75rem 1rem;background:var(--accent-red-bg);border:1px solid var(--accent-red-border);border-radius:8px;">
+              <div style="font-family:var(--mono);font-size:10px;color:var(--accent-red);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;">Jing的猜测 · Hypothesis — 待确认</div>
+              <p style="font-size:13px;line-height:1.7;color:var(--text-primary);">25%的缺口 = <strong style="font-weight:500;">MMP install only</strong> 这部分用户。具体来说：A2W2A campaign 在 Temu 设想的多点击模板完成之后，有一部分用户被 Adjust 链接直接带到商店完成安装。这部分安装有 MMP 归因，但没有对应的 S2S <code>actv</code>，因此只出现在 MMP install only 区域，Liftoff 的 CPA 模型当前未能学到这部分信号。</p>
+              <p style="font-size:12px;color:var(--text-muted);margin-top:5px;">Hypothesis to verify with Temu: is the ~25% gap specifically the "MMP install only" segment — users who installed via Adjust link directly, with no corresponding S2S actv postback?</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="conv-item">
+        <div class="conv-accent" style="background:#4A2F8C;"></div>
+        <div class="conv-body">
+          <div class="conv-tag"><div class="dot" style="background:#4A2F8C;"></div>去重前提疑问 · Dedup prerequisite challenged &nbsp;—&nbsp; <span style="color:var(--accent-purple);font-weight:500;">Temu（cris.chen）↔ Liftoff（Yifan）</span></div>
+          <p><strong style="font-weight:500;">Temu（cris.chen）</strong>提出质疑：S2S的 <code>actv</code> 改名为 <code>install</code> 后仍走S2S链路，不经过Adjust——<strong style="font-weight:500;">去重的依据是什么？</strong></p>
+          <p style="margin-top:0.6rem;"><strong style="font-weight:500;">Liftoff（Yifan）</strong>回应：去重必须依赖Adjust的install信号，A2W2A侧必须先配置MMP点击链路才能归因，去重才能生效。但<strong style="font-weight:500;">Temu（cris.chen）</strong>表示MMP点击链路配置"还在评估中"，造成进展阻塞。</p>
+          <div class="quote">Liftoff（Yifan）："de-duplication 必须依赖adjust的install信号，所以没太理解这里为什么还有评估的事情？"</div>
+        </div>
+      </div>
+
+      <div class="conv-item">
+        <div class="conv-accent" style="background:#7A4A0A;"></div>
+        <div class="conv-body">
+          <div class="conv-tag"><div class="dot" style="background:#7A4A0A;"></div>方案扩展讨论 · Scope expansion raised &nbsp;—&nbsp; <span style="color:var(--accent-purple);font-weight:500;">Liftoff（Jing &amp; Yifan）转述 Robert 意见</span></div>
+          <p><strong style="font-weight:500;">Liftoff（Jing &amp; Yifan）</strong>转述 Robert 的问题：希望在<strong style="font-weight:500;">MMP计划中也做测试</strong>，将部分 <code>actv</code> 改名为 <code>install</code> 回传给Liftoff，一方面验证去重是否生效，另一方面解决MMP侧的25%缺口。</p>
+          <p style="margin-top:0.6rem;"><strong style="font-weight:500;">Liftoff（Jing &amp; Yifan）</strong>进一步解释：推动actv+install并集方案的初始动因，正是希望弥补CPA模型少学习的这25%激活样本。</p>
+          <div class="quote">Temu（cris.chen）转述 Liftoff："今天早上Robert老师也想问你们mmp的一部分campaign要不要给一些actv改成install的信号我们看看，这样MMP的campaign那些也不耽误，同时看dedup的是不是work"</div>
+          <p class="sub">Liftoff (Jing &amp; Yifan) relayed Robert's ask: test dedup on MMP campaigns by renaming some <code>actv</code> → <code>install</code>, to validate dedup works and close the 25% training gap.</p>
+        </div>
+      </div>
+
+      <div class="conv-item">
+        <div class="conv-accent" style="background:#1F6645;"></div>
+        <div class="conv-body">
+          <div class="conv-tag"><div class="dot" style="background:#1F6645;"></div>最新更新 · Latest update &nbsp;—&nbsp; <span style="color:var(--accent-purple);font-weight:500;">Temu（cris.chen）明确提出两个方向</span></div>
+          <p><strong style="font-weight:500;">Temu（cris.chen）</strong>针对MMP计划的actv+install并集，明确提出两个处理方向，并强调<strong style="font-weight:500;">不希望用"改名"方式破坏现有信号体系</strong>：</p>
+          <div class="quote">Temu（cris.chen）："1. 直接你方将mmp里的actv信号当中install信号使用做去重，这样我方就不用做任何调整就可完成测试；2. 如果你们不想改，我们不希望使用改名的方式做这件事，而是多回传一路install信号给你们，这样不会破坏现状"</div>
+          <p class="sub">Temu (cris.chen) proposed two options: (1) Liftoff treats MMP <code>actv</code> as <code>install</code> internally — zero Temu changes needed; (2) If Liftoff prefers not to change, Temu will send an additional separate <code>install</code> postback — preserving the existing signal without renaming.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 03 TEMU'S TWO OPTIONS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Temu新提方案 <span class="zh">/ Temu's Two Proposed Options (Latest)</span></h2>
+    </div>
+    <div class="new-request-card">
+      <div class="new-request-header">
+        <p>Latest · 最新提议 — MMP Campaign scope · Temu明确不希望用改名方式</p>
+      </div>
+      <div class="option-grid">
+        <div class="option-col">
+          <div class="option-label">
+            <div class="option-num" style="background:var(--accent-amber-bg);color:var(--accent-amber);border:1px solid var(--accent-amber-border);">A</div>
+            <span style="color:var(--accent-amber);">Liftoff内部映射 / Liftoff absorbs actv</span>
+          </div>
+          <p>由 <strong style="font-weight:500;">Liftoff直接将MMP计划中收到的 <code>actv</code> 当作 <code>install</code> 使用</strong>，在Liftoff侧完成映射和去重逻辑。</p>
+          <p style="margin-top:0.6rem;color:var(--text-secondary);font-size:13.5px;">Temu无需做任何改动，可立即开始测试。</p>
+          <p class="sub-en">Liftoff internally maps MMP <code>actv</code> → <code>install</code>. Zero changes on Temu's side — fastest path to test.</p>
+        </div>
+        <div class="option-col">
+          <div class="option-label">
+            <div class="option-num" style="background:var(--accent-blue-bg);color:var(--accent-blue);border:1px solid var(--accent-blue-border);">B</div>
+            <span style="color:var(--accent-blue);">Temu额外回传 / Temu sends extra signal</span>
+          </div>
+          <p>由 <strong style="font-weight:500;">Temu在MMP计划中额外多回传一路 <code>install</code> 信号</strong>给Liftoff，与 <code>actv</code> 并存，不对现有事件做任何改名。</p>
+          <p style="margin-top:0.6rem;color:var(--text-secondary);font-size:13.5px;">不破坏现状，但需Temu新增一路回传集成。</p>
+          <p class="sub-en">Temu sends a new parallel <code>install</code> postback alongside <code>actv</code> on MMP campaigns. Preserves current signal integrity.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 SCENARIO COMPARISON -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">方案对比 <span class="zh">/ Scenario Comparison</span></h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Dimension / 维度</th>
+            <th>Original / 原始方案 &nbsp;<span class="pill pill-blue">A2W2A rename</span></th>
+            <th>Option A &nbsp;<span class="pill pill-amber">Liftoff maps actv</span></th>
+            <th>Option B &nbsp;<span class="pill pill-green">Temu extra signal</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="font-weight:500;">Coverage</strong><span class="zh-sub">覆盖范围</span></td>
+            <td>A2W2A only<span class="zh-sub">仅A2W2A</span></td>
+            <td>MMP campaigns<span class="zh-sub">MMP计划</span></td>
+            <td>MMP campaigns<span class="zh-sub">MMP计划</span></td>
+          </tr>
+          <tr>
+            <td><strong style="font-weight:500;">Change owner</strong><span class="zh-sub">改动方</span></td>
+            <td>Temu (S2S rename)<span class="zh-sub">Temu改名S2S事件</span></td>
+            <td>Liftoff (internal logic)<span class="zh-sub">Liftoff内部映射逻辑</span></td>
+            <td>Temu (new postback)<span class="zh-sub">Temu新增回传链路</span></td>
+          </tr>
+          <tr>
+            <td><strong style="font-weight:500;">Disrupts existing signals</strong><span class="zh-sub">破坏现有信号</span></td>
+            <td><span class="pill pill-amber">Yes / 是</span></td>
+            <td><span class="pill pill-green">No / 否</span></td>
+            <td><span class="pill pill-green">No / 否</span></td>
+          </tr>
+          <tr>
+            <td><strong style="font-weight:500;">Temu eng effort</strong><span class="zh-sub">Temu工程量</span></td>
+            <td><span class="pill pill-amber">Medium / 中</span></td>
+            <td><span class="pill pill-green">None / 零</span></td>
+            <td><span class="pill pill-amber">Medium / 中</span></td>
+          </tr>
+          <tr>
+            <td><strong style="font-weight:500;">Liftoff eng effort</strong><span class="zh-sub">Liftoff工程量</span></td>
+            <td><span class="pill pill-green">Low / 低</span></td>
+            <td><span class="pill pill-amber">Medium — mapping + dedup / 中</span></td>
+            <td><span class="pill pill-green">Low / 低</span></td>
+          </tr>
+          <tr>
+            <td><strong style="font-weight:500;">25% gap addressed</strong><span class="zh-sub">25%缺口修复</span></td>
+            <td><span class="pill pill-red">Partial / 不完整</span></td>
+            <td><span class="pill pill-green">Full potential / 有望完全</span></td>
+            <td><span class="pill pill-green">Full potential / 有望完全</span></td>
+          </tr>
+          <tr>
+            <td><strong style="font-weight:500;">Dedup prerequisite</strong><span class="zh-sub">去重前提</span></td>
+            <td>MMP click link needed first<span class="zh-sub">需先配置MMP点击链路</span></td>
+            <td>MMP has attribution natively<span class="zh-sub">MMP本身有归因，可直接去重</span></td>
+            <td>MMP has attribution natively<span class="zh-sub">MMP本身有归因，可直接去重</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 05 NEXT STEPS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">建议后续行动 <span class="zh">/ Recommended Next Steps</span></h2>
+    </div>
+    <div class="dual">
+      <div class="dual-col">
+        <div class="lang-badge badge-zh">中</div>
+        <hr class="divider">
+        <div class="steps">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content"><p>向Temu确认：Option A（Liftoff内部映射）还是Option B（Temu额外增加一路install回传）是当前优先推进方向？</p></div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content"><p>若选Option A：Liftoff PE评估在MMP计划中将 <code>actv</code> 内部映射为 <code>install</code> 并完成去重的技术可行性与工程量。</p></div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content"><p>优先解锁A2W2A：配置MMP点击链路，使Adjust归因和去重机制可以按设计运行（原始方案的前提）。</p></div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-content"><p>长期评估：原始方案已指出Adjust install与actv重叠量较低，后续需重新评估其是否仍为最优训练信号。</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="dual-col">
+        <div class="lang-badge badge-en">EN</div>
+        <hr class="divider">
+        <div class="steps">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content"><p>Confirm with Temu: Option A (Liftoff maps <code>actv</code> internally) or Option B (Temu sends extra <code>install</code> postback) — which is preferred?</p></div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content"><p>If Option A: Liftoff PE to scope the effort for internal <code>actv</code> → <code>install</code> mapping + dedup logic on MMP campaigns.</p></div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content"><p>Unblock A2W2A: configure MMP click link so Adjust attribution and dedup can function as designed (prerequisite for original proposal).</p></div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-content"><p>Revisit long-term: whether Adjust installs remain the best training signal, given low overlap volume noted in the original proposal.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Temu A2W2A · Install Postback Re-evaluation &nbsp;·&nbsp; April 9, 2026
+</footer>
+
+</body>
+</html>
