@@ -220,35 +220,45 @@
       <div class="conv-item">
         <div class="conv-accent" style="background:#1A4F8A;"></div>
         <div class="conv-body">
-          <div class="conv-tag"><div class="dot" style="background:#1A4F8A;"></div>背景确认 · Background confirmed &nbsp;—&nbsp; <span style="color:var(--accent-purple);font-weight:500;">Temu（Yifan）</span></div>
-          <p><strong style="font-weight:500;">Temu（Yifan）</strong>确认：CPA模型目前<strong style="font-weight:500;">少学习约25%的激活样本</strong>。原因是A2W2A流量没有配置MMP点击链路，Adjust无法对这部分流量归因，导致 <code>actv</code> 信号无法进入模型训练。Temu内部真实转化率与模型转化率的差距约为25%。</p>
-          <p class="sub">Temu (Yifan) confirmed: the CPA model is under-learning ~25% of activation signals because A2W2A traffic has no MMP click link configured → Adjust cannot attribute it → <code>actv</code> is excluded from training.</p>
+          <div class="conv-tag"><div class="dot" style="background:#1A4F8A;"></div>背景确认 · Background confirmed &nbsp;—&nbsp; <span style="color:var(--accent-purple);font-weight:500;">Temu（Cris）</span></div>
+          <p><strong style="font-weight:500;">Temu（Cris）</strong>确认：CPA模型目前<strong style="font-weight:500;">少学习约25%的激活样本</strong>。原因是A2W2A流量没有配置MMP点击链路，Adjust无法对这部分流量归因，导致 <code>actv</code> 信号无法进入模型训练。Temu内部真实转化率与模型转化率的差距约为25%。</p>
+          <p class="sub">Temu (Cris) confirmed: the CPA model is under-learning ~25% of activation signals because A2W2A traffic has no MMP click link configured → Adjust cannot attribute it → <code>actv</code> is excluded from training.</p>
 
           <!-- VENN DIAGRAM -->
           <div style="margin-top:1.25rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;">
             <div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:1.1rem;">Install signal coverage — 三类信号分布</div>
 
             <!-- SVG Venn -->
-            <svg viewBox="0 0 420 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;display:block;margin:0 auto 1rem;">
+            <svg viewBox="0 0 460 148" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:460px;display:block;margin:0 auto 1rem;">
+              <defs>
+                <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#E24B4A"/></marker>
+                <marker id="arr2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#1F6645"/></marker>
+              </defs>
               <!-- actv circle -->
-              <ellipse cx="155" cy="65" rx="120" ry="52" fill="rgba(74,47,140,0.08)" stroke="#4A2F8C" stroke-width="1.5"/>
+              <ellipse cx="165" cy="68" rx="128" ry="54" fill="rgba(74,47,140,0.08)" stroke="#4A2F8C" stroke-width="1.5"/>
               <!-- MMP circle -->
-              <ellipse cx="265" cy="65" rx="120" ry="52" fill="rgba(26,79,138,0.08)" stroke="#1A4F8A" stroke-width="1.5"/>
-              <!-- overlap fill -->
-              <ellipse cx="155" cy="65" rx="120" ry="52" fill="rgba(74,47,140,0.06)" stroke="none"/>
-              <!-- Labels -->
-              <text x="88" y="60" font-family="monospace" font-size="11" font-weight="600" fill="#4A2F8C" text-anchor="middle">actv</text>
-              <text x="88" y="74" font-family="monospace" font-size="11" font-weight="600" fill="#4A2F8C" text-anchor="middle">only</text>
-              <text x="210" y="58" font-family="monospace" font-size="10" fill="#666" text-anchor="middle">MMP</text>
-              <text x="210" y="71" font-family="monospace" font-size="10" fill="#666" text-anchor="middle">+</text>
-              <text x="210" y="84" font-family="monospace" font-size="10" fill="#666" text-anchor="middle">actv</text>
-              <text x="332" y="57" font-family="monospace" font-size="10" font-weight="600" fill="#1A4F8A" text-anchor="middle">MMP</text>
-              <text x="332" y="70" font-family="monospace" font-size="10" font-weight="600" fill="#1A4F8A" text-anchor="middle">install</text>
-              <text x="332" y="83" font-family="monospace" font-size="10" font-weight="600" fill="#1A4F8A" text-anchor="middle">only</text>
-              <!-- Arrow pointing to MMP install only with label -->
-              <line x1="332" y1="97" x2="332" y2="112" stroke="#E24B4A" stroke-width="1.5" marker-end="url(#arr)"/>
-              <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#E24B4A"/></marker></defs>
-              <text x="332" y="124" font-family="monospace" font-size="9" fill="#E24B4A" text-anchor="middle">← 25% gap (Jing's hypothesis)</text>
+              <ellipse cx="280" cy="68" rx="128" ry="54" fill="rgba(26,79,138,0.08)" stroke="#1A4F8A" stroke-width="1.5"/>
+              <!-- A2W2A future highlight on actv-only zone -->
+              <ellipse cx="118" cy="68" rx="60" ry="38" fill="rgba(31,102,69,0.13)" stroke="#1F6645" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+              <!-- Zone labels -->
+              <text x="90" y="63" font-family="monospace" font-size="11" font-weight="600" fill="#4A2F8C" text-anchor="middle">actv</text>
+              <text x="90" y="77" font-family="monospace" font-size="11" font-weight="600" fill="#4A2F8C" text-anchor="middle">only</text>
+              <text x="222" y="61" font-family="monospace" font-size="10" fill="#555" text-anchor="middle">MMP</text>
+              <text x="222" y="73" font-family="monospace" font-size="10" fill="#555" text-anchor="middle">+</text>
+              <text x="222" y="85" font-family="monospace" font-size="10" fill="#555" text-anchor="middle">actv</text>
+              <text x="353" y="60" font-family="monospace" font-size="10" font-weight="600" fill="#1A4F8A" text-anchor="middle">MMP</text>
+              <text x="353" y="73" font-family="monospace" font-size="10" font-weight="600" fill="#1A4F8A" text-anchor="middle">install</text>
+              <text x="353" y="86" font-family="monospace" font-size="10" font-weight="600" fill="#1A4F8A" text-anchor="middle">only</text>
+
+              <!-- Arrow to MMP install only — 25% gap -->
+              <line x1="353" y1="100" x2="353" y2="116" stroke="#E24B4A" stroke-width="1.5" marker-end="url(#arr)"/>
+              <text x="353" y="129" font-family="monospace" font-size="9" fill="#E24B4A" text-anchor="middle">25% gap (Jing's hypothesis)</text>
+
+              <!-- Arrow to A2W2A highlight zone -->
+              <line x1="80" y1="100" x2="100" y2="116" stroke="#1F6645" stroke-width="1.5" marker-end="url(#arr2)"/>
+              <text x="68" y="129" font-family="monospace" font-size="9" fill="#1F6645" text-anchor="middle">① 未来 A2W2A</text>
+              <text x="68" y="141" font-family="monospace" font-size="9" fill="#1F6645" text-anchor="middle">campaign</text>
             </svg>
 
             <!-- Legend -->
@@ -265,12 +275,16 @@
                 <div style="width:11px;height:11px;border-radius:50%;background:rgba(26,79,138,0.12);border:1.5px solid #1A4F8A;flex-shrink:0;margin-top:2px;"></div>
                 <span><strong style="font-weight:500;color:#1A4F8A;">MMP install only</strong> — 只有Adjust归因、没有S2S actv的用户。</span>
               </div>
+              <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.55;">
+                <div style="width:11px;height:11px;border-radius:2px;background:rgba(31,102,69,0.13);border:1.5px dashed #1F6645;flex-shrink:0;margin-top:2px;"></div>
+                <span><strong style="font-weight:500;color:#1F6645;">① 未来 A2W2A campaign</strong> — 在 Temu 多点击模板配置完成后，A2W2A流量将通过Adjust链接归因，预计落入此区域，成为可学习的install信号。</span>
+              </div>
             </div>
 
             <!-- Jing's hypothesis note -->
             <div style="margin-top:1rem;padding:0.75rem 1rem;background:var(--accent-red-bg);border:1px solid var(--accent-red-border);border-radius:8px;">
               <div style="font-family:var(--mono);font-size:10px;color:var(--accent-red);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;">Jing的猜测 · Hypothesis — 待确认</div>
-              <p style="font-size:13px;line-height:1.7;color:var(--text-primary);">25%的缺口 = <strong style="font-weight:500;">MMP install only</strong> 这部分用户。具体来说：A2W2A campaign 在 Temu 设想的多点击模板完成之后，有一部分用户被 Adjust 链接直接带到商店完成安装。这部分安装有 MMP 归因，但没有对应的 S2S <code>actv</code>，因此只出现在 MMP install only 区域，Liftoff 的 CPA 模型当前未能学到这部分信号。</p>
+              <p style="font-size:13px;line-height:1.7;color:var(--text-primary);">25%的缺口 = <strong style="font-weight:500;">MMP install only</strong> 这部分用户。A2W2A campaign 在 Temu 设想的多点击模板完成之后，有一部分用户被 Adjust 链接直接带到商店完成安装。这部分安装有 MMP 归因，但没有对应的 S2S <code>actv</code>，因此只出现在 MMP install only 区域，Liftoff 的 CPA 模型当前未能学到这部分信号。</p>
               <p style="font-size:12px;color:var(--text-muted);margin-top:5px;">Hypothesis to verify with Temu: is the ~25% gap specifically the "MMP install only" segment — users who installed via Adjust link directly, with no corresponding S2S actv postback?</p>
             </div>
           </div>
@@ -280,9 +294,9 @@
       <div class="conv-item">
         <div class="conv-accent" style="background:#4A2F8C;"></div>
         <div class="conv-body">
-          <div class="conv-tag"><div class="dot" style="background:#4A2F8C;"></div>去重前提疑问 · Dedup prerequisite challenged &nbsp;—&nbsp; <span style="color:var(--accent-purple);font-weight:500;">Temu（cris.chen）↔ Liftoff（Yifan）</span></div>
-          <p><strong style="font-weight:500;">Temu（cris.chen）</strong>提出质疑：S2S的 <code>actv</code> 改名为 <code>install</code> 后仍走S2S链路，不经过Adjust——<strong style="font-weight:500;">去重的依据是什么？</strong></p>
-          <p style="margin-top:0.6rem;"><strong style="font-weight:500;">Liftoff（Yifan）</strong>回应：去重必须依赖Adjust的install信号，A2W2A侧必须先配置MMP点击链路才能归因，去重才能生效。但<strong style="font-weight:500;">Temu（cris.chen）</strong>表示MMP点击链路配置"还在评估中"，造成进展阻塞。</p>
+          <div class="conv-tag"><div class="dot" style="background:#4A2F8C;"></div>去重前提疑问 · Dedup prerequisite challenged &nbsp;—&nbsp; <span style="color:var(--accent-purple);font-weight:500;">Temu（Cris）↔ Liftoff（Yifan）</span></div>
+          <p><strong style="font-weight:500;">Temu（Cris）</strong>提出质疑：S2S的 <code>actv</code> 改名为 <code>install</code> 后仍走S2S链路，不经过Adjust——<strong style="font-weight:500;">去重的依据是什么？</strong></p>
+          <p style="margin-top:0.6rem;"><strong style="font-weight:500;">Liftoff（Yifan）</strong>回应：去重必须依赖Adjust的install信号，A2W2A侧必须先配置MMP点击链路才能归因，去重才能生效。但<strong style="font-weight:500;">Temu（Cris）</strong>表示MMP点击链路配置"还在评估中"，造成进展阻塞。</p>
           <div class="quote">Liftoff（Yifan）："de-duplication 必须依赖adjust的install信号，所以没太理解这里为什么还有评估的事情？"</div>
         </div>
       </div>
@@ -290,11 +304,11 @@
       <div class="conv-item">
         <div class="conv-accent" style="background:#7A4A0A;"></div>
         <div class="conv-body">
-          <div class="conv-tag"><div class="dot" style="background:#7A4A0A;"></div>方案扩展讨论 · Scope expansion raised &nbsp;—&nbsp; <span style="color:var(--accent-purple);font-weight:500;">Liftoff（Jing &amp; Yifan）转述 Robert 意见</span></div>
+          <div class="conv-tag"><div class="dot" style="background:#7A4A0A;"></div>方案扩展讨论 · Scope expansion raised &nbsp;—&nbsp; <span style="color:var(--accent-purple);font-weight:500;">Liftoff（Jing &amp; Yifan）转述 Robert · Temu（Cris）补充动因</span></div>
           <p><strong style="font-weight:500;">Liftoff（Jing &amp; Yifan）</strong>转述 Robert 的问题：希望在<strong style="font-weight:500;">MMP计划中也做测试</strong>，将部分 <code>actv</code> 改名为 <code>install</code> 回传给Liftoff，一方面验证去重是否生效，另一方面解决MMP侧的25%缺口。</p>
-          <p style="margin-top:0.6rem;"><strong style="font-weight:500;">Liftoff（Jing &amp; Yifan）</strong>进一步解释：推动actv+install并集方案的初始动因，正是希望弥补CPA模型少学习的这25%激活样本。</p>
-          <div class="quote">Temu（cris.chen）转述 Liftoff："今天早上Robert老师也想问你们mmp的一部分campaign要不要给一些actv改成install的信号我们看看，这样MMP的campaign那些也不耽误，同时看dedup的是不是work"</div>
-          <p class="sub">Liftoff (Jing &amp; Yifan) relayed Robert's ask: test dedup on MMP campaigns by renaming some <code>actv</code> → <code>install</code>, to validate dedup works and close the 25% training gap.</p>
+          <div class="quote">Temu（Cris）转述："今天早上Robert老师也想问你们mmp的一部分campaign要不要给一些actv改成install的信号我们看看，这样MMP的campaign那些也不耽误，同时看dedup的是不是work"</div>
+          <p style="margin-top:0.75rem;"><strong style="font-weight:500;">Temu（Cris）</strong>进一步解释：推动actv+install并集方案的初始动因，正是希望弥补CPA模型少学习的这25%激活样本。</p>
+          <p class="sub">Liftoff (Jing &amp; Yifan) relayed Robert's ask to test dedup on MMP campaigns. Temu (Cris) separately explained their motivation: the union approach was always intended to close the 25% training gap.</p>
         </div>
       </div>
 
