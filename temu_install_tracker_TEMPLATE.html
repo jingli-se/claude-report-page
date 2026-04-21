@@ -3,61 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Campaign Install Source Monitor</title>
+<title>Temu A2W2A — Campaign Install Source Monitor</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F7F5F0; color: #1A1714; padding: 2rem 1.25rem; min-height: 100vh; }
-  .page { max-width: 900px; margin: 0 auto; }
-  .header { margin-bottom: 1.75rem; }
+  .page { max-width: 960px; margin: 0 auto; }
+
+  .header { margin-bottom: 1.5rem; }
   .header h1 { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
   .header p { font-size: 13px; color: #6B6458; line-height: 1.55; }
-  .header .meta { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px; }
-  .header .meta span { font-size: 12px; color: #9E9689; display: flex; align-items: center; gap: 4px; }
-  .header .meta span::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: #9E9689; display: inline-block; }
+  .header .meta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; }
+  .header .meta span { font-size: 12px; color: #9E9689; display: flex; align-items: center; gap: 5px; }
+  .header .meta span::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: #9E9689; display: inline-block; flex-shrink: 0; }
+
+  .disclaimer { display: flex; align-items: flex-start; gap: 10px; background: #FAEAEA; border: 1px solid #E8AAAA; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #791F1F; line-height: 1.6; margin-bottom: 1rem; }
+  .disclaimer strong { font-weight: 500; }
+
   .card { background: #fff; border-radius: 12px; border: 1px solid #E0DBD0; padding: 1.5rem; margin-bottom: 1rem; }
+  .section-title { font-size: 11px; font-weight: 500; color: #9E9689; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 12px; }
+
   .controls { display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem; flex-wrap: wrap; }
   .controls label { font-size: 12px; color: #6B6458; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
   .controls select { font-size: 13px; padding: 6px 28px 6px 10px; border: 1px solid #C8C2B4; border-radius: 8px; background: #fff; color: #1A1714; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B6458' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 8px center; }
   .controls select:focus { outline: none; border-color: #185FA5; }
-  .divider { width: 1px; height: 20px; background: #E0DBD0; }
-  .leg { display: flex; gap: 20px; font-size: 12px; color: #6B6458; margin-bottom: 14px; align-items: center; }
+  .vdivider { width: 1px; height: 20px; background: #E0DBD0; }
+
+  .leg { display: flex; gap: 20px; font-size: 12px; color: #6B6458; margin-bottom: 14px; align-items: center; flex-wrap: wrap; }
   .sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 5px; vertical-align: middle; }
-  .chart-wrap { position: relative; width: 100%; height: 300px; margin-bottom: 1.25rem; }
+
+  .chart-wrap { position: relative; width: 100%; height: 320px; margin-bottom: 1.25rem; }
+
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .stat { background: #F2EFE9; border-radius: 8px; padding: 12px 14px; }
   .stat-label { font-size: 10px; color: #6B6458; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
   .stat-value { font-size: 24px; font-weight: 500; line-height: 1.1; }
   .stat-sub { font-size: 11px; color: #9E9689; margin-top: 3px; }
-  .section-title { font-size: 12px; font-weight: 500; color: #9E9689; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+
+  .note { background: #FDF3E3; border: 1px solid #F0CF98; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #633806; line-height: 1.6; margin-top: 1rem; }
+
   .campaign-table { width: 100%; border-collapse: collapse; font-size: 13px; }
   .campaign-table th { text-align: left; font-size: 11px; font-weight: 500; color: #9E9689; text-transform: uppercase; letter-spacing: 0.06em; padding: 8px 12px; background: #F2EFE9; border-bottom: 1px solid #E0DBD0; }
-  .campaign-table td { padding: 9px 12px; border-bottom: 1px solid #E0DBD0; color: #1A1714; vertical-align: top; line-height: 1.45; }
+  .campaign-table td { padding: 9px 12px; border-bottom: 1px solid #E0DBD0; color: #1A1714; vertical-align: middle; line-height: 1.45; }
   .campaign-table tr:last-child td { border-bottom: none; }
   .campaign-table tr:hover td { background: #F7F5F0; }
   .mono { font-family: 'SF Mono', 'Fira Mono', monospace; font-size: 11px; color: #6B6458; }
-  .badge { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 20px; letter-spacing: 0.03em; }
+  .badge { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 20px; letter-spacing: 0.03em; margin-right: 3px; }
   .badge-blue { background: #EBF2FA; color: #185FA5; }
   .badge-red  { background: #FAEAEA; color: #A32D2D; }
-  .note { background: #FDF3E3; border: 1px solid #F0CF98; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #633806; line-height: 1.6; margin-top: 1rem; }
-  @media (max-width: 600px) { .stats { grid-template-columns: 1fr; } .controls { gap: 8px; } }
+
+  /* Paste zone */
+  .paste-zone { border: 1.5px dashed #C8C2B4; border-radius: 8px; padding: 1rem; background: #F7F5F0; }
+  .paste-zone textarea { width: 100%; height: 120px; font-family: 'SF Mono', 'Fira Mono', monospace; font-size: 11px; color: #1A1714; background: #fff; border: 1px solid #E0DBD0; border-radius: 6px; padding: 8px; resize: vertical; }
+  .paste-zone textarea:focus { outline: none; border-color: #185FA5; }
+  .paste-actions { display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+  .btn { font-size: 13px; padding: 7px 16px; border-radius: 8px; border: 1px solid #C8C2B4; background: #fff; color: #1A1714; cursor: pointer; font-weight: 500; }
+  .btn:hover { background: #F2EFE9; }
+  .btn-primary { background: #185FA5; color: #fff; border-color: #185FA5; }
+  .btn-primary:hover { background: #0C447C; }
+  .paste-status { font-size: 12px; color: #6B6458; }
+  .paste-status.ok  { color: #1F6645; }
+  .paste-status.err { color: #A32D2D; }
+
+  @media (max-width: 600px) {
+    .stats { grid-template-columns: 1fr; }
+    .controls { gap: 8px; }
+  }
 </style>
 </head>
 <body>
 <div class="page">
 
   <div class="header">
-    <h1 id="pageTitle"><!-- AUTO from CONFIG --></h1>
-    <p id="pageDesc"><!-- AUTO from CONFIG --></p>
-    <div class="meta" id="pageMeta"><!-- AUTO from CONFIG --></div>
+    <h1>Temu Android (US) — A2W2A Campaign Install Source Monitor</h1>
+    <p>Daily breakdown of install attribution across A2W2A campaigns. Geo: United States.</p>
+    <div class="meta">
+      <span>App ID: 6926</span>
+      <span>Period: Apr 15–21, 2026</span>
+      <span>actv → install rename: Apr 8, 2026</span>
+      <span>Adding S2S install signal: Apr 17, 2026</span>
+    </div>
   </div>
 
+  <div class="disclaimer">
+    <span style="font-size:16px;flex-shrink:0;">&#9888;</span>
+    <div>
+      <strong>Data freshness notice —</strong> data last refreshed <strong>Apr 21, 2026</strong>.
+      Historical data prior to today has not been updated and may not reflect the current state.
+      To request a refresh of the latest source data, please reach out to <strong>SE (Sales Engineering)</strong>.
+    </div>
+  </div>
+
+  <!-- CHART CARD -->
   <div class="card">
     <div class="section-title">Install source by day</div>
+
     <div class="controls">
       <label>Campaign</label>
       <select id="campSelect"></select>
-      <div class="divider"></div>
+      <div class="vdivider"></div>
       <label>Tracker</label>
       <select id="trackerSelect">
         <option value="all">Both trackers</option>
@@ -65,15 +109,18 @@
         <option value="ct">customer-tracker (S2S) only</option>
       </select>
     </div>
+
     <div class="leg">
       <span><span class="sw" style="background:#185FA5;"></span>adjust (MMP)</span>
       <span><span class="sw" style="background:#D85A30;"></span>customer-tracker (S2S)</span>
     </div>
+
     <div class="chart-wrap"><canvas id="campChart"></canvas></div>
     <div class="stats" id="statsRow"></div>
-    <div class="note" id="pageNote"><!-- AUTO from CONFIG --></div>
+    <div class="note" id="pageNote"></div>
   </div>
 
+  <!-- CAMPAIGN REFERENCE TABLE -->
   <div class="card">
     <div class="section-title">Campaign reference</div>
     <table class="campaign-table">
@@ -90,71 +137,108 @@
     </table>
   </div>
 
+  <!-- PASTE TO REFRESH -->
+  <div class="card">
+    <div class="section-title">Refresh data — paste TSV from Superset / Trino</div>
+    <p style="font-size:13px;color:#6B6458;margin-bottom:12px;">Copy results from Superset (Export → Copy as TSV) and paste below. First row must be the header: <span class="mono">DAY&nbsp;&nbsp;tracker&nbsp;&nbsp;campaign_id&nbsp;&nbsp;campaign_name&nbsp;&nbsp;install_count</span></p>
+    <div class="paste-zone">
+      <textarea id="tsvInput" placeholder="Paste TSV data here (including header row)..."></textarea>
+      <div class="paste-actions">
+        <button class="btn btn-primary" onclick="loadFromTSV()">Refresh chart</button>
+        <button class="btn" onclick="document.getElementById('tsvInput').value=''">Clear</button>
+        <span class="paste-status" id="pasteStatus"></span>
+      </div>
+    </div>
+  </div>
+
 </div>
+
 <script>
-
 /* ============================================================
-   DATA SOURCE — edit this section when reusing for new data
+   CONFIG
    ============================================================ */
-
 const CONFIG = {
-  title:  'Temu Android — Campaign Install Source Monitor',
-  desc:   'Daily breakdown of install attribution: Adjust (MMP) vs customer-tracker (S2S) across A2W2A campaigns.',
-  meta:   [
-    'App ID: 6926',
-    'Period: Apr 15–20, 2026',
-    'actv → install rename: Apr 8, 2026',
-    'Adding install signal: Apr 17, 2026',
-  ],
-  note: 'S2S (customer-tracker) installs began appearing from Apr 9 onward following the actv → install rename on Apr 8. Campaign 55551 shows the most consistent S2S signal (~15–20% of daily installs). Campaign 69520 is predominantly MMP. Campaign 70526 has minimal volume and appears inactive after Apr 16.',
+  note: 'S2S (customer-tracker) installs active from Apr 17 onward across multiple campaigns. Campaign 61933 has the highest overall volume. Campaign 55551 shows a consistent ~15–20% S2S mix. Campaigns 61841 and 70523 show growing S2S signals from Apr 17. Campaign 69520 remains predominantly MMP. Campaign 70526 has minimal volume (Apr 15–16 only).',
 };
 
-/* RAW DATA — replace rows here with new query results
-   Fields: day (string label), camp (campaign_id), name (campaign_name/external_id), tr ('adjust' or 'ct'), n (install_count) */
-const RAW = [
-  {day:'Apr 15', camp:'55551', name:'c108acd8-9d28-4538-9462-0210b3d43b13', tr:'adjust', n:71},
-  {day:'Apr 15', camp:'55551', name:'c108acd8-9d28-4538-9462-0210b3d43b13', tr:'ct',     n:1},
-  {day:'Apr 15', camp:'69520', name:'f55b1530-2a63-492e-af3d-c75a8c4d0582', tr:'adjust', n:13},
-  {day:'Apr 15', camp:'70526', name:'abd202e6-2fdf-47bd-af1f-5eecf83ebea0', tr:'adjust', n:23},
-  {day:'Apr 16', camp:'55551', name:'c108acd8-9d28-4538-9462-0210b3d43b13', tr:'adjust', n:33},
-  {day:'Apr 16', camp:'69520', name:'f55b1530-2a63-492e-af3d-c75a8c4d0582', tr:'adjust', n:6},
-  {day:'Apr 16', camp:'70526', name:'abd202e6-2fdf-47bd-af1f-5eecf83ebea0', tr:'adjust', n:2},
-  {day:'Apr 17', camp:'55551', name:'c108acd8-9d28-4538-9462-0210b3d43b13', tr:'adjust', n:51},
-  {day:'Apr 17', camp:'55551', name:'c108acd8-9d28-4538-9462-0210b3d43b13', tr:'ct',     n:14},
-  {day:'Apr 17', camp:'69520', name:'f55b1530-2a63-492e-af3d-c75a8c4d0582', tr:'adjust', n:22},
-  {day:'Apr 17', camp:'69520', name:'f55b1530-2a63-492e-af3d-c75a8c4d0582', tr:'ct',     n:3},
-  {day:'Apr 18', camp:'55551', name:'c108acd8-9d28-4538-9462-0210b3d43b13', tr:'adjust', n:48},
-  {day:'Apr 18', camp:'55551', name:'c108acd8-9d28-4538-9462-0210b3d43b13', tr:'ct',     n:9},
-  {day:'Apr 18', camp:'69520', name:'f55b1530-2a63-492e-af3d-c75a8c4d0582', tr:'adjust', n:16},
-  {day:'Apr 19', camp:'55551', name:'c108acd8-9d28-4538-9462-0210b3d43b13', tr:'adjust', n:58},
-  {day:'Apr 19', camp:'55551', name:'c108acd8-9d28-4538-9462-0210b3d43b13', tr:'ct',     n:14},
-  {day:'Apr 19', camp:'69520', name:'f55b1530-2a63-492e-af3d-c75a8c4d0582', tr:'adjust', n:2},
-  {day:'Apr 20', camp:'55551', name:'c108acd8-9d28-4538-9462-0210b3d43b13', tr:'adjust', n:30},
-  {day:'Apr 20', camp:'55551', name:'c108acd8-9d28-4538-9462-0210b3d43b13', tr:'ct',     n:3},
+/* ============================================================
+   RAW DATA — hardcoded from Apr 21 query run
+   tr: 'adjust' = MMP, 'ct' = customer-tracker S2S
+   ============================================================ */
+let RAW = [
+  {day:'Apr 15',camp:'55551',name:'c108acd8-9d28-4538-9462-0210b3d43b13',tr:'adjust',n:71},
+  {day:'Apr 15',camp:'55551',name:'c108acd8-9d28-4538-9462-0210b3d43b13',tr:'ct',    n:1},
+  {day:'Apr 15',camp:'61841',name:'d380ec30-0be7-4cd3-8386-ab1fe88088ad',tr:'adjust',n:45},
+  {day:'Apr 15',camp:'61933',name:'af989fcf-61fe-46f9-8e4d-5ba11b8428bc',tr:'adjust',n:95},
+  {day:'Apr 15',camp:'61933',name:'af989fcf-61fe-46f9-8e4d-5ba11b8428bc',tr:'ct',    n:1},
+  {day:'Apr 15',camp:'69520',name:'f55b1530-2a63-492e-af3d-c75a8c4d0582',tr:'adjust',n:13},
+  {day:'Apr 15',camp:'70523',name:'6534e398-23d7-4e1c-8b9e-ce4770c657cc',tr:'adjust',n:12},
+  {day:'Apr 15',camp:'70526',name:'abd202e6-2fdf-47bd-af1f-5eecf83ebea0',tr:'adjust',n:23},
+
+  {day:'Apr 16',camp:'55551',name:'c108acd8-9d28-4538-9462-0210b3d43b13',tr:'adjust',n:33},
+  {day:'Apr 16',camp:'61841',name:'d380ec30-0be7-4cd3-8386-ab1fe88088ad',tr:'adjust',n:44},
+  {day:'Apr 16',camp:'61933',name:'af989fcf-61fe-46f9-8e4d-5ba11b8428bc',tr:'adjust',n:106},
+  {day:'Apr 16',camp:'69520',name:'f55b1530-2a63-492e-af3d-c75a8c4d0582',tr:'adjust',n:6},
+  {day:'Apr 16',camp:'70523',name:'6534e398-23d7-4e1c-8b9e-ce4770c657cc',tr:'adjust',n:18},
+  {day:'Apr 16',camp:'70526',name:'abd202e6-2fdf-47bd-af1f-5eecf83ebea0',tr:'adjust',n:2},
+
+  {day:'Apr 17',camp:'55551',name:'c108acd8-9d28-4538-9462-0210b3d43b13',tr:'adjust',n:51},
+  {day:'Apr 17',camp:'55551',name:'c108acd8-9d28-4538-9462-0210b3d43b13',tr:'ct',    n:14},
+  {day:'Apr 17',camp:'61841',name:'d380ec30-0be7-4cd3-8386-ab1fe88088ad',tr:'adjust',n:73},
+  {day:'Apr 17',camp:'61841',name:'d380ec30-0be7-4cd3-8386-ab1fe88088ad',tr:'ct',    n:6},
+  {day:'Apr 17',camp:'61933',name:'af989fcf-61fe-46f9-8e4d-5ba11b8428bc',tr:'adjust',n:109},
+  {day:'Apr 17',camp:'61933',name:'af989fcf-61fe-46f9-8e4d-5ba11b8428bc',tr:'ct',    n:28},
+  {day:'Apr 17',camp:'69520',name:'f55b1530-2a63-492e-af3d-c75a8c4d0582',tr:'adjust',n:22},
+  {day:'Apr 17',camp:'69520',name:'f55b1530-2a63-492e-af3d-c75a8c4d0582',tr:'ct',    n:3},
+  {day:'Apr 17',camp:'70523',name:'6534e398-23d7-4e1c-8b9e-ce4770c657cc',tr:'adjust',n:37},
+  {day:'Apr 17',camp:'70523',name:'6534e398-23d7-4e1c-8b9e-ce4770c657cc',tr:'ct',    n:2},
+
+  {day:'Apr 18',camp:'55551',name:'c108acd8-9d28-4538-9462-0210b3d43b13',tr:'adjust',n:48},
+  {day:'Apr 18',camp:'55551',name:'c108acd8-9d28-4538-9462-0210b3d43b13',tr:'ct',    n:9},
+  {day:'Apr 18',camp:'61841',name:'d380ec30-0be7-4cd3-8386-ab1fe88088ad',tr:'adjust',n:37},
+  {day:'Apr 18',camp:'61841',name:'d380ec30-0be7-4cd3-8386-ab1fe88088ad',tr:'ct',    n:7},
+  {day:'Apr 18',camp:'61933',name:'af989fcf-61fe-46f9-8e4d-5ba11b8428bc',tr:'adjust',n:80},
+  {day:'Apr 18',camp:'61933',name:'af989fcf-61fe-46f9-8e4d-5ba11b8428bc',tr:'ct',    n:41},
+  {day:'Apr 18',camp:'69520',name:'f55b1530-2a63-492e-af3d-c75a8c4d0582',tr:'adjust',n:16},
+  {day:'Apr 18',camp:'70523',name:'6534e398-23d7-4e1c-8b9e-ce4770c657cc',tr:'adjust',n:12},
+  {day:'Apr 18',camp:'70523',name:'6534e398-23d7-4e1c-8b9e-ce4770c657cc',tr:'ct',    n:5},
+
+  {day:'Apr 19',camp:'55551',name:'c108acd8-9d28-4538-9462-0210b3d43b13',tr:'adjust',n:58},
+  {day:'Apr 19',camp:'55551',name:'c108acd8-9d28-4538-9462-0210b3d43b13',tr:'ct',    n:14},
+  {day:'Apr 19',camp:'61841',name:'d380ec30-0be7-4cd3-8386-ab1fe88088ad',tr:'adjust',n:33},
+  {day:'Apr 19',camp:'61841',name:'d380ec30-0be7-4cd3-8386-ab1fe88088ad',tr:'ct',    n:2},
+  {day:'Apr 19',camp:'61933',name:'af989fcf-61fe-46f9-8e4d-5ba11b8428bc',tr:'adjust',n:112},
+  {day:'Apr 19',camp:'61933',name:'af989fcf-61fe-46f9-8e4d-5ba11b8428bc',tr:'ct',    n:46},
+  {day:'Apr 19',camp:'69520',name:'f55b1530-2a63-492e-af3d-c75a8c4d0582',tr:'adjust',n:2},
+  {day:'Apr 19',camp:'70523',name:'6534e398-23d7-4e1c-8b9e-ce4770c657cc',tr:'adjust',n:27},
+  {day:'Apr 19',camp:'70523',name:'6534e398-23d7-4e1c-8b9e-ce4770c657cc',tr:'ct',    n:5},
+
+  {day:'Apr 20',camp:'55551',name:'c108acd8-9d28-4538-9462-0210b3d43b13',tr:'adjust',n:64},
+  {day:'Apr 20',camp:'55551',name:'c108acd8-9d28-4538-9462-0210b3d43b13',tr:'ct',    n:11},
+  {day:'Apr 20',camp:'61841',name:'d380ec30-0be7-4cd3-8386-ab1fe88088ad',tr:'adjust',n:49},
+  {day:'Apr 20',camp:'61841',name:'d380ec30-0be7-4cd3-8386-ab1fe88088ad',tr:'ct',    n:8},
+  {day:'Apr 20',camp:'61933',name:'af989fcf-61fe-46f9-8e4d-5ba11b8428bc',tr:'adjust',n:103},
+  {day:'Apr 20',camp:'61933',name:'af989fcf-61fe-46f9-8e4d-5ba11b8428bc',tr:'ct',    n:59},
+  {day:'Apr 20',camp:'70523',name:'6534e398-23d7-4e1c-8b9e-ce4770c657cc',tr:'adjust',n:35},
+  {day:'Apr 20',camp:'70523',name:'6534e398-23d7-4e1c-8b9e-ce4770c657cc',tr:'ct',    n:5},
+
+  {day:'Apr 21',camp:'55551',name:'c108acd8-9d28-4538-9462-0210b3d43b13',tr:'adjust',n:12},
+  {day:'Apr 21',camp:'55551',name:'c108acd8-9d28-4538-9462-0210b3d43b13',tr:'ct',    n:2},
+  {day:'Apr 21',camp:'61841',name:'d380ec30-0be7-4cd3-8386-ab1fe88088ad',tr:'adjust',n:11},
+  {day:'Apr 21',camp:'61933',name:'af989fcf-61fe-46f9-8e4d-5ba11b8428bc',tr:'adjust',n:13},
+  {day:'Apr 21',camp:'61933',name:'af989fcf-61fe-46f9-8e4d-5ba11b8428bc',tr:'ct',    n:8},
+  {day:'Apr 21',camp:'70523',name:'6534e398-23d7-4e1c-8b9e-ce4770c657cc',tr:'adjust',n:1},
 ];
 
 /* ============================================================
-   ENGINE — no need to edit below this line
+   ENGINE
    ============================================================ */
 
-// derive days and campaigns automatically from RAW
-const DAYS = [...new Set(RAW.map(r => r.day))];
-const CAMPS = [...new Map(RAW.map(r => [r.camp, {id:r.camp, name:r.name}])).values()];
-
-// populate page header
-document.getElementById('pageTitle').textContent = CONFIG.title;
-document.getElementById('pageDesc').textContent  = CONFIG.desc;
-document.getElementById('pageNote').textContent  = CONFIG.note;
-document.getElementById('pageMeta').innerHTML = CONFIG.meta
-  .map(m => `<span>${m}</span>`).join('');
-
-// populate campaign dropdown
-const campSel = document.getElementById('campSelect');
-campSel.innerHTML = '<option value="all">All campaigns</option>' +
-  CAMPS.map(c => `<option value="${c.id}">${c.id} — ${c.name.slice(0,8)}</option>`).join('');
+function getDays(data)  { return [...new Set(data.map(r => r.day))]; }
+function getCamps(data) { return [...new Map(data.map(r => [r.camp, {id:r.camp, name:r.name}])).values()]; }
 
 function getFiltered() {
-  const camp    = campSel.value;
+  const camp    = document.getElementById('campSelect').value;
   const tracker = document.getElementById('trackerSelect').value;
   return RAW.filter(r =>
     (camp === 'all' || r.camp === camp) &&
@@ -162,8 +246,8 @@ function getFiltered() {
   );
 }
 
-function sumByDayTracker(data, tracker) {
-  return DAYS.map(d =>
+function sumByDayTracker(data, days, tracker) {
+  return days.map(d =>
     data.filter(r => r.day === d && r.tr === tracker).reduce((s, r) => s + r.n, 0)
   );
 }
@@ -175,14 +259,22 @@ function updateStats(data) {
   const pctAdj   = total > 0 ? Math.round(totalAdj*100/total) : 0;
   const pctCT    = total > 0 ? Math.round(totalCT *100/total) : 0;
   document.getElementById('statsRow').innerHTML = `
-    <div class="stat"><div class="stat-label">Total installs</div><div class="stat-value">${total.toLocaleString()}</div><div class="stat-sub">selected period &amp; filter</div></div>
+    <div class="stat"><div class="stat-label">Total installs</div><div class="stat-value">${total.toLocaleString()}</div><div class="stat-sub">selected filter</div></div>
     <div class="stat"><div class="stat-label">Adjust (MMP)</div><div class="stat-value" style="color:#185FA5">${totalAdj.toLocaleString()}</div><div class="stat-sub">${pctAdj}% of total</div></div>
     <div class="stat"><div class="stat-label">S2S (customer-tracker)</div><div class="stat-value" style="color:#D85A30">${totalCT.toLocaleString()}</div><div class="stat-sub">${pctCT}% of total</div></div>
   `;
 }
 
+function buildDropdown() {
+  const camps = getCamps(RAW);
+  const sel = document.getElementById('campSelect');
+  sel.innerHTML = '<option value="all">All campaigns</option>' +
+    camps.map(c => `<option value="${c.id}">${c.id} — ${c.name.slice(0,8)}</option>`).join('');
+}
+
 function buildTable() {
-  document.getElementById('campTableBody').innerHTML = CAMPS.map(c => {
+  const camps = getCamps(RAW);
+  document.getElementById('campTableBody').innerHTML = camps.map(c => {
     const cData   = RAW.filter(r => r.camp === c.id);
     const total   = cData.reduce((s,r) => s+r.n, 0);
     const totalCT = cData.filter(r => r.tr === 'ct').reduce((s,r) => s+r.n, 0);
@@ -192,54 +284,118 @@ function buildTable() {
     return `<tr>
       <td><strong style="font-weight:500">${c.id}</strong></td>
       <td><span class="mono">${c.name}</span></td>
-      <td style="display:flex;gap:5px;flex-wrap:wrap;padding-top:10px">
-        ${hasAdj ? '<span class="badge badge-blue">adjust</span>' : ''}
-        ${hasCT  ? '<span class="badge badge-red">S2S</span>'    : ''}
-      </td>
+      <td>${hasAdj?'<span class="badge badge-blue">adjust</span>':''}${hasCT?'<span class="badge badge-red">S2S</span>':''}</td>
       <td>${total.toLocaleString()}</td>
       <td style="color:${pctCT>0?'#D85A30':'#888780'};font-weight:${pctCT>0?'500':'400'}">${pctCT}%</td>
     </tr>`;
   }).join('');
 }
 
-const chart = new Chart(document.getElementById('campChart').getContext('2d'), {
-  type: 'bar',
-  data: {
-    labels: DAYS,
-    datasets: [
-      { label:'adjust (MMP)',            data: sumByDayTracker(RAW,'adjust'), backgroundColor:'#185FA5', stack:'stack', borderRadius:3, borderSkipped:false },
-      { label:'customer-tracker (S2S)',  data: sumByDayTracker(RAW,'ct'),     backgroundColor:'#D85A30', stack:'stack', borderRadius:3, borderSkipped:false },
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: {
-        title: tt => 'Date: ' + tt[0].label,
-        label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} installs`
-      }}
-    },
-    scales: {
-      x: { stacked:true, ticks:{ autoSkip:false, color:'#888780', font:{size:12} }, grid:{ display:false } },
-      y: { stacked:true, title:{ display:true, text:'installs / day', color:'#888780', font:{size:11} }, ticks:{ color:'#888780', font:{size:12} }, grid:{ color:'rgba(136,135,128,0.15)' } }
-    }
-  }
-});
+let chart;
 
-updateStats(RAW);
-buildTable();
+function buildChart() {
+  const days = getDays(RAW);
+  const data = getFiltered();
+  const ctx  = document.getElementById('campChart').getContext('2d');
+  if (chart) chart.destroy();
+  chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: days,
+      datasets: [
+        { label:'adjust (MMP)',           data: sumByDayTracker(data, days, 'adjust'), backgroundColor:'#185FA5', stack:'stack', borderRadius:3, borderSkipped:false },
+        { label:'customer-tracker (S2S)', data: sumByDayTracker(data, days, 'ct'),     backgroundColor:'#D85A30', stack:'stack', borderRadius:3, borderSkipped:false },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: {
+          title: tt => 'Date: ' + tt[0].label,
+          label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} installs`
+        }}
+      },
+      scales: {
+        x: { stacked:true, ticks:{ autoSkip:false, color:'#888780', font:{size:11}, maxRotation:35 }, grid:{ display:false } },
+        y: { stacked:true, title:{ display:true, text:'installs / day', color:'#888780', font:{size:11} }, ticks:{ color:'#888780', font:{size:12} }, grid:{ color:'rgba(136,135,128,0.15)' } }
+      }
+    }
+  });
+}
 
 function refresh() {
+  const days = getDays(RAW);
   const data = getFiltered();
-  chart.data.datasets[0].data = sumByDayTracker(data,'adjust');
-  chart.data.datasets[1].data = sumByDayTracker(data,'ct');
+  chart.data.labels = days;
+  chart.data.datasets[0].data = sumByDayTracker(data, days, 'adjust');
+  chart.data.datasets[1].data = sumByDayTracker(data, days, 'ct');
   chart.update();
   updateStats(data);
 }
 
-campSel.addEventListener('change', refresh);
+function fullRebuild() {
+  buildDropdown();
+  buildChart();
+  buildTable();
+  updateStats(RAW);
+  document.getElementById('pageNote').textContent = CONFIG.note;
+}
+
+/* ============================================================
+   PASTE-TO-REFRESH — parse TSV from Superset
+   Expected columns: DAY  tracker  campaign_id  campaign_name  install_count
+   ============================================================ */
+function parseDayLabel(isoStr) {
+  const d = new Date(isoStr);
+  return d.toLocaleDateString('en-US', { month:'short', day:'numeric', timeZone:'UTC' });
+}
+
+function loadFromTSV() {
+  const raw  = document.getElementById('tsvInput').value.trim();
+  const stat = document.getElementById('pasteStatus');
+  if (!raw) { stat.className='paste-status err'; stat.textContent='Nothing pasted.'; return; }
+
+  const lines = raw.split('\n').map(l => l.split('\t'));
+  const header = lines[0].map(h => h.trim().toLowerCase());
+
+  const iDay   = header.indexOf('day');
+  const iTrack = header.indexOf('tracker');
+  const iCamp  = header.indexOf('campaign_id');
+  const iName  = header.indexOf('campaign_name');
+  const iCount = header.indexOf('install_count');
+
+  if ([iDay,iTrack,iCamp,iName,iCount].some(i => i === -1)) {
+    stat.className='paste-status err';
+    stat.textContent='Column mismatch. Expected: DAY, tracker, campaign_id, campaign_name, install_count';
+    return;
+  }
+
+  try {
+    const parsed = lines.slice(1).filter(l => l.length >= 5 && l[iDay]).map(l => ({
+      day:  parseDayLabel(l[iDay].trim()),
+      tr:   l[iTrack].trim() === 'customer-tracker' ? 'ct' : 'adjust',
+      camp: l[iCamp].trim(),
+      name: l[iName].trim(),
+      n:    parseInt(l[iCount].trim(), 10) || 0,
+    }));
+
+    if (!parsed.length) throw new Error('No rows parsed');
+
+    RAW = parsed;
+    fullRebuild();
+    stat.className='paste-status ok';
+    stat.textContent=`Loaded ${parsed.length} rows across ${getDays(RAW).length} days.`;
+  } catch(e) {
+    stat.className='paste-status err';
+    stat.textContent='Parse error: ' + e.message;
+  }
+}
+
+document.getElementById('campSelect').addEventListener('change', refresh);
 document.getElementById('trackerSelect').addEventListener('change', refresh);
+
+fullRebuild();
 </script>
 </body>
 </html>
